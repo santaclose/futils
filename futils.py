@@ -7,6 +7,8 @@ def folderChain(path):
 def getParentFolder(path):
 	if path[-1] == '/' or path[-1] == '\\':
 		path = path[:-1]
+	if '/' not in path and '\\' not in path:
+		return None
 	end = max(path.rfind('\\'), path.rfind('/'))
 	return path[:end].replace('\\', '/')
 
@@ -26,7 +28,10 @@ def moveFolder(src, target):
 	shutil.move(src, target)
 
 def moveFile(src, target):
-	os.rename(src, target)
+	parentFolder = getParentFolder(target)
+	if parentFolder is not None:
+		createFolder(parentFolder)
+	shutil.move(src, target)
 
 def createFolder(folder):
 	result = False
@@ -40,5 +45,19 @@ def createFolder(folder):
 		result = True
 
 def createFile(file):
-	createFolder(getParentFolder(file))
+	parentFolder = getParentFolder(file)
+	if parentFolder is not None:
+		createFolder(parentFolder)
 	open(file, "a+").close()
+
+def getExtension(file):
+	i = len(file) - 1
+	while True:
+		if i < 0:
+			break
+		if file[i] == '/' or file[i] == '\\':
+			break
+		if file[i] == '.':
+			return file[i + 1:]
+		i -= 1
+	return None

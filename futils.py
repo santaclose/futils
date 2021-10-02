@@ -61,3 +61,20 @@ def getExtension(file):
 			return file[i + 1:]
 		i -= 1
 	return None
+
+def getName(file):
+	extensionConsidered = False
+	p = len(file)
+	i = p - 1
+	while True:
+		if i < 0:
+			q = 0
+			break
+		if file[i] == '.' and not extensionConsidered:
+			p = i
+			extensionConsidered = True
+		if file[i] == '/' or file[i] == '\\':
+			q = i + 1
+			break
+		i -= 1
+	return file[q:p]

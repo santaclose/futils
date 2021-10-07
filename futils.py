@@ -4,6 +4,12 @@ import shutil
 def folderChain(path):
 	return [path[:i].replace('\\', '/') for i in range(len(path)) if path[i] == '/' or path[i] == '\\']
 
+def normalizePath(path):
+	result = path.replace('\\', '/')
+	if result[-1] != '/':
+		result += '/'
+	return result
+
 def getParentFolder(path):
 	if path[-1] == '/' or path[-1] == '\\':
 		path = path[:-1]

@@ -84,3 +84,30 @@ def getName(file):
 			break
 		i -= 1
 	return file[q:p]
+
+def removeExtension(file):
+	i = len(file) - 1
+	while True:
+		if i < 0:
+			return file
+		if file[i] == '.':
+			return file[:i]
+		i -= 1
+
+def resolve(absoluteFolder, relativePath):
+	nAbsoluteFolder = normalizePath(absoluteFolder)
+	nRelativePath = normalizePath(relativePath)[:-1]
+
+	relPathList = nRelativePath.split('/')
+	absFolderList = nAbsoluteFolder[:-1].split('/')
+	res = nAbsoluteFolder[:-1].split('/')
+
+	for item in relPathList:
+		if item == ".":
+			continue
+		if item == "..":
+			res.pop()
+			continue
+		res.append(item)
+
+	return "/".join(res)
